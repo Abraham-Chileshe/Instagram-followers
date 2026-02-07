@@ -8,9 +8,7 @@ Route::post('/access-code', [AccessCodeController::class, 'verify'])->name('acce
 Route::post('/logout', [AccessCodeController::class, 'logout'])->name('logout');
 
 Route::middleware(['access_code'])->group(function () {
-    Route::get('/', function () {
-        return view('home');
-    })->name('home');
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     // Add more protected routes here
 
@@ -33,11 +31,14 @@ Route::get('/withdraw', [App\Http\Controllers\WithdrawalController::class, 'crea
 Route::post('/withdraw', [App\Http\Controllers\WithdrawalController::class, 'store'])->name('withdraw.store');
 Route::get('/withdrawals', [App\Http\Controllers\WithdrawalController::class, 'index'])->name('withdraw.index');
 
+Route::post('/stories', [App\Http\Controllers\StoryController::class, 'store'])->name('stories.store');
+
 // Admin Routes (Simple for MVP)
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/submissions', [App\Http\Controllers\AdminController::class, 'index'])->name('submissions.index');
     Route::post('/submissions/{submission}/approve', [App\Http\Controllers\AdminController::class, 'approve'])->name('submissions.approve');
     Route::post('/submissions/{submission}/reject', [App\Http\Controllers\AdminController::class, 'reject'])->name('submissions.reject');
+    Route::post('/users/{user}/revoke', [App\Http\Controllers\AdminController::class, 'revokeAccess'])->name('users.revoke');
     
     Route::get('/withdrawals', [App\Http\Controllers\AdminController::class, 'withdrawals'])->name('withdrawals.index');
     Route::post('/withdrawals/{withdrawal}/approve', [App\Http\Controllers\AdminController::class, 'approveWithdrawal'])->name('withdrawals.approve');

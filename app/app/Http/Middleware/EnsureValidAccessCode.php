@@ -15,7 +15,7 @@ class EnsureValidAccessCode
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->session()->has('active_access_code')) {
+        if (!$request->session()->has('active_access_code') && !$request->session()->has('pending_access_code')) {
             return redirect()->route('access-code.show');
         }
 

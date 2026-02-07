@@ -28,6 +28,7 @@ class User extends Authenticatable
         'is_subscribed_to_target',
         'joined_at',
         'role',
+        'is_banned',
     ];
 
     public function recruiter()

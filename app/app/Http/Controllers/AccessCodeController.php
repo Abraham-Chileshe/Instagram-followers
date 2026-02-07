@@ -24,6 +24,7 @@ class AccessCodeController extends Controller
 
         $accessCode = AccessCode::where('code', $request->code)
             ->where('status', 'active')
+            ->where('expires_at', '>', now())
             ->first();
 
         if (!$accessCode) {

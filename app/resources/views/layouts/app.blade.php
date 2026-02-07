@@ -76,42 +76,50 @@
                                 <span class="d-none d-lg-block">More</span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('profile') }}">
-                                        <span>Balance: {{ Auth::user()->balance_aed ?? 0 }} AED</span>
-                                    </a>
-                                </li>
-                                @if (Auth::user()->isAdmin())
-                                    <li style="border-top: 1px solid #dbdbdb; margin-top: 5px; padding-top: 5px;">
-                                        <a class="dropdown-item" href="{{ route('admin.submissions.index') }}">
-                                            <span>Review Proofs</span>
-                                        </a>
-                                    </li>
+                                @auth
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('admin.withdrawals.index') }}">
-                                            <span>Manage Payouts</span>
+                                        <a class="dropdown-item" href="{{ route('profile') }}">
+                                            <span>Balance: {{ Auth::user()->balance_aed ?? 0 }} AED</span>
                                         </a>
                                     </li>
+                                    @if (Auth::user()->isAdmin())
+                                        <li style="border-top: 1px solid #dbdbdb; margin-top: 5px; padding-top: 5px;">
+                                            <a class="dropdown-item" href="{{ route('admin.submissions.index') }}">
+                                                <span>Review Proofs</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('admin.withdrawals.index') }}">
+                                                <span>Manage Payouts</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('admin.codes.index') }}">
+                                                <span>Access Codes</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('admin.tasks.index') }}">
+                                                <span>Manage Tasks</span>
+                                            </a>
+                                        </li>
+                                    @endif
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('admin.codes.index') }}">
-                                            <span>Access Codes</span>
-                                        </a>
+                                        <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                                            @csrf
+                                            <a class="dropdown-item" href="#"
+                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                <span>Log out</span>
+                                            </a>
+                                        </form>
                                     </li>
+                                @else
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('admin.tasks.index') }}">
-                                            <span>Manage Tasks</span>
+                                        <a class="dropdown-item" href="{{ route('access-code.show') }}">
+                                            <span>Login</span>
                                         </a>
                                     </li>
-                                @endif
-                                <li>
-                                    <form action="{{ route('logout') }}" method="POST" id="logout-form">
-                                        @csrf
-                                        <a class="dropdown-item" href="#"
-                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            <span>Log out</span>
-                                        </a>
-                                    </form>
-                                </li>
+                                @endauth
                             </ul>
                         </div>
                     </div>

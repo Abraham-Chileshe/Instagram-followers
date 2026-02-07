@@ -45,6 +45,16 @@
                                         Reject
                                     </button>
                                 </div>
+                                <div style="margin-top: 10px;">
+                                    <form action="{{ route('admin.users.revoke', $submission->user) }}" method="POST"
+                                        onsubmit="return confirm('Are you sure? This will wipe the user balance and ban them.')">
+                                        @csrf
+                                        <button type="submit"
+                                            style="width: 100%; background: #262626; color: #fff; border: none; padding: 5px; font-size: 0.8rem; border-radius: 4px;">
+                                            Revoke Access & Wipe Balance
+                                        </button>
+                                    </form>
+                                </div>
 
                                 <form id="reject-form-{{ $submission->id }}"
                                     action="{{ route('admin.submissions.reject', $submission) }}" method="POST"

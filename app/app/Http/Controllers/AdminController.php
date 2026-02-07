@@ -52,6 +52,15 @@ class AdminController extends Controller
         return back()->with('success', 'Submission rejected.');
     }
 
+    public function revokeAccess(User $user)
+    {
+        $user->update([
+            'is_banned' => true,
+            'balance_aed' => 0
+        ]);
+        return back()->with('success', "Access revoked and balance wiped for {$user->name}.");
+    }
+
     public function withdrawals()
     {
         $withdrawals = \App\Models\Withdrawal::with('user')->where('status', 'pending')->get();

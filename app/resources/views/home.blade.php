@@ -5,16 +5,67 @@
 @section('content')
     <div class="main_section">
         <div class="posts_container" style="max-width: 700px; width: 100%;">
-            <div class="stories" style="height: auto; padding: 20px;">
-                <h3>Welcome, {{ Auth::user()->name }}</h3>
-                <p>Your Instagram growth starts here.</p>
-                <form action="{{ route('invite.generate') }}" method="POST" style="margin-top: 10px;">
-                    @csrf
-                    <button type="submit" class="btn btn-primary"
-                        style="background: #0095f6; border: none; font-weight: bold; font-size: 0.9rem;">Generate Invite
-                        Code</button>
-                </form>
+            <div class="stories"
+                style="height: auto; padding: 20px; display: flex; align-items: center; overflow-x: auto; gap: 15px; border-bottom: 1px solid #dbdbdb;">
+                <!-- Upload Story Button -->
+                <div style="flex-shrink: 0; text-align: center;">
+                    <form action="{{ route('stories.store') }}" method="POST" enctype="multipart/form-data"
+                        id="story-upload-form">
+                        @csrf
+                        <label for="story_file" style="cursor: pointer;">
+                            <div
+                                style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #0095f6; display: flex; align-items: center; justify-content: center; background: #fff;">
+                                <span style="font-size: 2rem; color: #0095f6;">+</span>
+                            </div>
+                            <span style="font-size: 0.8rem; display: block; margin-top: 5px;">Your Story</span>
+                        </label>
+                        <input type="file" name="story_file" id="story_file" style="display: none;"
+                            onchange="document.getElementById('story-upload-form').submit();">
+                    </form>
+                </div>
+
+                <!-- Active Stories -->
+                @foreach ($stories as $story)
+                    <div style="flex-shrink: 0; text-align: center; cursor: pointer;"
+                        onclick="viewStory('{{ asset('storage/' . $story->file_path) }}', '{{ $story->type }}')">
+                        <div
+                            style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #e1306c; padding: 2px;">
+                            <img src="{{ $story->type == 'image' ? asset('storage/' . $story->file_path) : asset('images/profile_img.jpg') }}"
+                                style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                        </div>
+                        <span
+                            style="font-size: 0.8rem; display: block; margin-top: 5px; width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $story->user->name ?? 'User' }}</span>
+                    </div>
+                @endforeach
             </div>
+
+            <!-- Story Viewer Modal (Simple) -->
+            <div id="story-viewer"
+                style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center;">
+                <span onclick="closeStory()"
+                    style="position: absolute; top: 20px; right: 30px; color: #fff; font-size: 2rem; cursor: pointer;">&times;</span>
+                <div id="story-content" style="max-width: 90%; max-height: 90%;"></div>
+            </div>
+
+            <script>
+                function viewStory(url, type) {
+                    const viewer = document.getElementById('story-viewer');
+                    const content = document.getElementById('story-content');
+                    content.innerHTML = '';
+                    if (type === 'image') {
+                        content.innerHTML = `<img src="${url}" style="max-width: 100%; max-height: 80vh; border-radius: 8px;">`;
+                    } else {
+                        content.innerHTML =
+                            `<video src="${url}" controls autoplay style="max-width: 100%; max-height: 80vh; border-radius: 8px;"></video>`;
+                    }
+                    viewer.style.display = 'flex';
+                }
+
+                function closeStory() {
+                    document.getElementById('story-viewer').style.display = 'none';
+                    document.getElementById('story-content').innerHTML = '';
+                }
+            </script>
 
             <div class="dashboard-content">
                 <div class="post_cart"
