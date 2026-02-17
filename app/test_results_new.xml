@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Tests\Feature\SubscriptionTest" file="C:\wamp64\www\instagram-follows\Instagram-followers\app\tests\Feature\SubscriptionTest.php" tests="2" assertions="5" errors="0" failures="1" skipped="0" time="2.065797">
+    <testcase name="test_unsubscribed_user_cannot_withdraw" file="C:\wamp64\www\instagram-follows\Instagram-followers\app\tests\Feature\SubscriptionTest.php" line="15" class="Tests\Feature\SubscriptionTest" classname="Tests.Feature.SubscriptionTest" assertions="3" time="1.799581"/>
+    <testcase name="test_subscribed_user_can_withdraw" file="C:\wamp64\www\instagram-follows\Instagram-followers\app\tests\Feature\SubscriptionTest.php" line="52" class="Tests\Feature\SubscriptionTest" classname="Tests.Feature.SubscriptionTest" assertions="2" time="0.266216">
+      <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\SubscriptionTest::test_subscribed_user_can_withdraw&#13;
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'http://127.0.0.1:8000/withdraw'
++'http://127.0.0.1:8000/withdrawals'
+&#13;
+C:\wamp64\www\instagram-follows\Instagram-followers\app\vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+C:\wamp64\www\instagram-follows\Instagram-followers\app\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:431
+C:\wamp64\www\instagram-follows\Instagram-followers\app\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:205
+C:\wamp64\www\instagram-follows\Instagram-followers\app\tests\Feature\SubscriptionTest.php:85</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

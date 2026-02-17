@@ -25,7 +25,12 @@ class WithdrawalController extends Controller
 
         $user = Auth::user();
 
-        // 0. Join Date Restriction (Must be joined for at least 7 days)
+        // 0. Instagram Subscription Check
+        if (!$user->is_subscribed_to_target) {
+            return back()->withErrors(['amount_aed' => 'You must be subscribed to the target Instagram account to withdraw funds.']);
+        }
+
+        // 1. Join Date Restriction (Must be joined for at least 7 days)
         $joinDate = $user->created_at; // Using created_at as join date if joined_at is null
         if ($joinDate->gt(now()->subDays(7))) {
             $daysLeft = round(now()->diffInDays($joinDate->addDays(7)), 1);

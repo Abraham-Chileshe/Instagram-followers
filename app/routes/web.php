@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/access-code', [AccessCodeController::class, 'show'])->name('access-code.show');
 Route::get('/login', [AccessCodeController::class, 'show'])->name('login'); // Define login route
+Route::post('/login', [AccessCodeController::class, 'login']); // Handle email/password login
 Route::post('/access-code', [AccessCodeController::class, 'verify'])->name('access-code.verify');
 Route::post('/logout', [AccessCodeController::class, 'logout'])->name('logout');
 

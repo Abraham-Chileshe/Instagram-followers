@@ -69,6 +69,24 @@
 
             <div class="dashboard-content">
                 <div class="post_cart"
+                    style="background: #fff; padding: 15px 25px; border-radius: 8px; border: 1px solid #dbdbdb; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-weight: bold; color: #262626;">Instagram Subscription:</span>
+                        @if (Auth::user()?->is_subscribed_to_target)
+                            <span
+                                style="background: #e1f5fe; color: #039be5; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">Verified</span>
+                        @else
+                            <span
+                                style="background: #fff3e0; color: #ef6c00; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">Pending
+                                Verification</span>
+                        @endif
+                    </div>
+                    @if (!Auth::user()?->is_subscribed_to_target)
+                        <small style="color: #ed4956; font-weight: bold;">Withdrawals disabled until verified</small>
+                    @endif
+                </div>
+
+                <div class="post_cart"
                     style="background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #dbdbdb; margin-bottom: 25px;">
                     <h4 style="font-size: 1.2rem; margin-bottom: 20px;">Balance Statistics</h4>
                     <div style="display: flex; justify-content: space-around; margin-top: 10px;">

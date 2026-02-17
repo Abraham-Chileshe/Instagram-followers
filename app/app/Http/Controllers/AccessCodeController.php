@@ -26,18 +26,9 @@ class AccessCodeController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            // Set the active access code in session if user has one
-            $user = Auth::user();
-            $accessCode = $user->accessCodes()->where('status', 'active')->first();
-            if ($accessCode) {
-                Session::put('active_access_code', $accessCode->code);
-            } else {
-                // Check for used ones too if we want them to bypass entry screen
-                $usedCode = $user->accessCodes()->where('status', 'used')->first();
-                if ($usedCode) {
-                    Session::put('active_access_code', $usedCode->code);
-                }
-            }
+            // We NO LONGER restore the access code session here to strictly follow
+            // the "single-session" requirement. Users must enter a code to proceed.
+            // Only permanent codes could be exception, but we keep it simple.
 
             return redirect()->intended(route('home'));
         }
