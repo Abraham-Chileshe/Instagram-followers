@@ -19,6 +19,12 @@ class EnsureValidAccessCode
             return redirect()->route('access-code.show');
         }
 
+        // If user has a pending code but is not logged in, and tries to access the home page,
+        // redirect them to register.
+        if ($request->session()->has('pending_access_code') && !auth()->check() && $request->routeIs('home')) {
+            return redirect()->route('register');
+        }
+
         return $next($request);
     }
 }

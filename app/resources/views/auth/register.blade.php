@@ -24,6 +24,17 @@
                         @enderror
                     </div>
 
+                    <div style="margin-top: 10px;">
+                        <input type="password" name="password" placeholder="Password" required>
+                        @error('password')
+                            <small style="color: #ed4956; font-size: 10px;">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                    </div>
+
                     <div style="margin-top: 15px;">
                         <label style="font-size: 12px; color: #8e8e8e; display: block; margin-bottom: 5px;">Payment
                             Preference</label>

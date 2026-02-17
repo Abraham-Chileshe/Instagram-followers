@@ -16,6 +16,37 @@ class AccessCodeController extends Controller
         return view('auth.access-code');
     }
 
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+
+            // Set the active access code in session if user has one
+            $user = Auth::user();
+            $accessCode = $user->accessCodes()->where('status', 'active')->first();
+            if ($accessCode) {
+                Session::put('active_access_code', $accessCode->code);
+            } else {
+                // Check for used ones too if we want them to bypass entry screen
+                $usedCode = $user->accessCodes()->where('status', 'used')->first();
+                if ($usedCode) {
+                    Session::put('active_access_code', $usedCode->code);
+                }
+            }
+
+            return redirect()->intended(route('home'));
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
     public function verify(Request $request)
     {
         $request->validate([
@@ -24,7 +55,10 @@ class AccessCodeController extends Controller
 
         $accessCode = AccessCode::where('code', $request->code)
             ->where('status', 'active')
-            ->where('expires_at', '>', now())
+            ->where(function ($query) {
+                $query->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now());
+            })
             ->first();
 
         if (!$accessCode) {
@@ -45,8 +79,11 @@ class AccessCodeController extends Controller
             return redirect()->route('register');
         }
 
-        // Mark code as used
-        $accessCode->update(['status' => 'used']);
+        // Mark code as used ONLY if it's not a permanent code (expires_at is not null)
+        if ($accessCode->expires_at !== null) {
+            $accessCode->update(['status' => 'used']);
+        }
+        
         Session::put('active_access_code', $accessCode->code);
 
         return redirect()->route('home');

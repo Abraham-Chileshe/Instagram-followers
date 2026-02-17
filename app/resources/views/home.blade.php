@@ -34,7 +34,7 @@
                                 style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
                         </div>
                         <span
-                            style="font-size: 0.8rem; display: block; margin-top: 5px; width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $story->user->name ?? 'User' }}</span>
+                            style="font-size: 0.8rem; display: block; margin-top: 5px; width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ optional($story->user)->name ?? 'User' }}</span>
                     </div>
                 @endforeach
             </div>
@@ -74,18 +74,18 @@
                     <div style="display: flex; justify-content: space-around; margin-top: 10px;">
                         <div style="text-align: center;">
                             <span
-                                style="display: block; font-size: 2rem; font-weight: bold; color: #262626;">{{ Auth::user()->balance_aed }}
+                                style="display: block; font-size: 2rem; font-weight: bold; color: #262626;">{{ Auth::user()?->balance_aed ?? 0 }}
                                 AED</span>
                             <span style="font-size: 1rem; color: #8e8e8e;">Current Balance</span>
                         </div>
                         <div style="text-align: center;">
                             <span
-                                style="display: block; font-size: 2rem; font-weight: bold; color: #262626;">{{ Auth::user()->referrals()->count() }}</span>
+                                style="display: block; font-size: 2rem; font-weight: bold; color: #262626;">{{ Auth::user()?->referrals()->count() ?? 0 }}</span>
                             <span style="font-size: 1rem; color: #8e8e8e;">Referrals</span>
                         </div>
                         <div style="text-align: center;">
                             <span
-                                style="display: block; font-size: 2rem; font-weight: bold; color: #262626;">{{ Auth::user()->submissions()->where('status', 'approved')->count() }}</span>
+                                style="display: block; font-size: 2rem; font-weight: bold; color: #262626;">{{ Auth::user()?->submissions()->where('status', 'approved')->count() ?? 0 }}</span>
                             <span style="font-size: 1rem; color: #8e8e8e;">Tasks Completed</span>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                     style="background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #dbdbdb;">
                     <h4 style="font-size: 1.2rem; margin-bottom: 15px;">Recent Activity</h4>
                     <ul style="list-style: none; padding: 0; margin-top: 10px;">
-                        @forelse(Auth::user()->submissions()->latest()->take(3)->get() as $submission)
+                        @forelse(optional(Auth::user())->submissions()?->latest()->take(3)->get() ?? [] as $submission)
                             <li style="border-bottom: 1px solid #efefef; padding: 15px 0;">
                                 <span style="display: block; font-weight: bold; font-size: 1.1rem;">Submitted:
                                     {{ $submission->task ? $submission->task->title : 'Deleted Task' }}</span>
@@ -134,8 +134,8 @@
                         <img src="{{ asset('images/profile_img.jpg') }}" alt="">
                     </div>
                     <div class="info">
-                        <p class="name">{{ Auth::user()->username ?? 'User' }}</p>
-                        <p class="second_name">{{ Auth::user()->name }}</p>
+                        <p class="name">{{ Auth::user()?->username ?? 'User' }}</p>
+                        <p class="second_name">{{ Auth::user()?->name ?? 'Anonymous' }}</p>
                     </div>
                 </div>
             </div>
@@ -144,7 +144,7 @@
                     <h4>Recent Referrals</h4>
                     <a class="dark" href="{{ route('referrals.index') }}">See All</a>
                 </div>
-                @forelse(Auth::user()->referrals()->latest()->take(5)->get() as $referral)
+                @forelse(optional(Auth::user())->referrals()?->latest()->take(5)->get() ?? [] as $referral)
                     <div class="cart">
                         <div>
                             <div class="img">

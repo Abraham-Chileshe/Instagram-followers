@@ -39,5 +39,12 @@ class InitialDataSeeder extends Seeder
             'user_id' => $user->id,
             'expires_at' => now()->addDays(7),
         ]);
+
+        \App\Models\AccessCode::create([
+            'code' => 'ADMIN-CODE',
+            'status' => 'active',
+            'user_id' => $admin->id,
+            'expires_at' => null,
+        ]);
     }
 }
